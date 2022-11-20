@@ -1,0 +1,49 @@
+name: job-dependencies
+on:
+ push:
+  branches: ['master']
+ pull_request:
+  branches: ['master']
+ workflow_dispatch:
+jobs:
+  job1:
+   env:
+    JOB1_VARIABLE: "This is the vraiable for job1"
+   strategy:
+     matrix:
+       version: [10,12,15]
+       os: [ubuntu-latest,windows-latest,macOS-latest]
+    runs-os: ${{matrix.os}}
+    steps:
+      - run:echo $JOB1_VARIABLE
+   job 2:
+    env:
+      JOB2_VAIABLE: "THIS IS THE VARIABLE FOR JOB2"
+    strategy:
+      matrix:
+        version: [10,12,15]
+        os: [ubuntu-latest,windows-latest,macOS-latest]
+    runs-os: ${{matrix.os}}
+    steps:
+     - run: ./server.sh
+   job3:
+     needs: job2
+     stratergy:
+      matrix:
+        version: [10,12,15]
+        os: [ubuntu-latest,windows-latest,macOS-latest]
+     runs-os: ${{matrix.os}}
+     steps:
+      - run: echo "JOB3 runs if job2 is successful"
+   
+   job4:
+     if: always()
+     needs: job2
+     stratergy:
+      matrix:
+        version: [10,12,15]
+        os: [ubuntu-latest,windows-latest,macOS-latest]
+     runs-os: ${{matrix.os}}
+     steps:
+      - run: echo "JOB3 runs if job2 is successful"
+   
