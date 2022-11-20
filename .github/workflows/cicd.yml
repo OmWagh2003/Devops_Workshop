@@ -5,8 +5,8 @@ on:
  workflow_dispatch:
 defaults:
  run:
-   working_directory: ./
- jobs: 
+   working-directory: ./
+jobs: 
    Build:
      name: build
      runs-on: ubuntu-latest
